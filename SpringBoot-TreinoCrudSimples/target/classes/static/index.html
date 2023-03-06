@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style/style.css" />
+    <title>Cadastro de Pessoas</title>
+  </head>
+  <body>
+    <main>
+      <!--títutlo-->
+      <h1>Cadastro de Pessoas</h1>
+
+      <!--msg actions-->
+      <div class="alert alert-success" role="alert" id="successSave">
+        Pessoa cadastrada com sucesso!
+      </div>
+
+      <div class="alert alert-success" role="alert" id="successDelete">
+        Pessoa excluida com sucesso!
+      </div>
+
+      <div class="alert alert-success" role="alert" id="successEdit">
+        Pessoa editada com sucesso!
+      </div>
+      <!--end msg actions-->
+
+      <!--form-->
+      <div id="formSavePerson">
+        <div class="mb-3 row" style="display: block">
+          <label
+            for="iname"
+            class="col-sm-2 col-form-label"
+            style="font-size: 1.5em; margin-bottom: 10px"
+            >Nome:</label
+          >
+          <div class="col-sm-10" style="margin: auto">
+            <input
+              type="text"
+              placeholder="Digite o nome"
+              style="font-size: 1.2em"
+              class="form-control"
+              name="name"
+              id="iname"
+              required
+            />
+            <p class="errorCamp">Campo obrigatório</p>
+          </div>
+        </div>
+        <button type="button" class="btn btn-success" onclick="submitSave()">
+          Salvar
+        </button>
+      </div>
+      <!--End form-->
+      <br />
+      <!--other options-->
+      <div id="other">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#listAllModal"
+          onclick="listAll()"
+        >
+          Listar Todos
+        </button>
+        <button
+          type="button"
+          class="btn btn-warning"
+          data-bs-toggle="modal"
+          data-bs-target="#searchModal"
+          onclick="openSearch()"
+        >
+          Procurar
+        </button>
+      </div>
+
+      <!--modal list All-->
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="listAllModal"
+        tabindex="-1"
+        aria-labelledby="listAllModal"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="listAllModal">
+                Lista de pessoas
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!--alert table null-->
+              <div class="alert alert-danger" role="alert" id="alertNull">
+                O sistema não possui nenhum cadastro!
+              </div>
+              <div class="tableHeight">
+                <table class="table" id="tableListAll">
+                  <thead>
+                    <tr>
+                      <th scope="col">Id</th>
+                      <th scope="col">Nome</th>
+                      <th scope="col">Opçõpes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!--datas-->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                data-bs-dismiss="modal"
+                class="btn btn-primary"
+              >
+                fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end modal list-->
+
+      <!--modal delete-->
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="deleteContatoModal"
+        tabindex="-1"
+        aria-labelledby="deleteContatoModal"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="deleteContatoModal">
+                Excluir contato
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <p style="text-align: center">
+                Você realmente deseja excluir esse contato?
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                onclick="deletePerson()"
+              >
+                Excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end modal delete-->
+
+      <!--modal edit-->
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="editModal"
+        tabindex="-1"
+        aria-labelledby="editModal"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="editModal">Editar pessoa</h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!--form edit person-->
+              <div id="formEditPerson">
+                <div
+                  class="mb-3 row"
+                  style="display: block; text-align: center"
+                >
+                  <label
+                    for="inameEdit"
+                    class="col-sm-2 col-form-label"
+                    style="font-size: 1.5em; margin-bottom: 10px"
+                    >Nome:</label
+                  >
+                  <div class="col-sm-10" style="margin: auto">
+                    <input
+                      type="text"
+                      placeholder="Digite o nome"
+                      style="font-size: 1.2em"
+                      class="form-control"
+                      name="nameedit"
+                      id="inameEdit"
+                      required
+                    />
+                    <p class="errorCampEdit">Campo obrigatório</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                cancelar
+              </button>
+              <!-- -->
+              <button
+                id="btnEdit"
+                type="button"
+                data-bs-dismiss="modal"
+                class="btn btn-primary"
+                onclick="editPerson()"
+              >
+                Editar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end modal edit-->
+
+      <!--modal search person-->
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="searchModal"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="searchModal">Buscar Pessoa</h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!--body-->
+              <!--input-->
+              <div class="mb-3">
+                <label for="inamesearch" class="form-label"
+                style="display: block;text-align: center;"
+                  >Nome:</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="inamesearch"
+                  placeholder="Digite o nome:"
+                />
+                <p class="errorCampSearch" style="text-align:center;">Campo obrigatório</p>
+              </div>
+              <div style="text-align: center;"><button type="button" class="btn btn-success" id="btnSearch" style="margin-bottom: 1rem;" onclick="executeSearch()">Pesquisar</button></div>
+              <!--Alert-->
+              <div class="alert alert-warning" role="alert" id="alertNameSearch">
+                Digite o nome para realizar a pesquisa
+              </div>
+              <div class="alert alert-danger" role="alert" id="searchNull">
+                Nenhuma pessoa encontrada com esse nome!
+              </div>
+              <!--table-->
+              <div class="tableHeight">
+                <table class="table" id="tableSearch">
+                  <thead>
+                    <tr>
+                      <th scope="col">Id</th>
+                      <th scope="col">Nome</th>
+                      <th scope="col">Opções</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end modal search peerso-->
+      <!--modal -->
+    </main>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    <script src="script/requestApi.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.js"
+      integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

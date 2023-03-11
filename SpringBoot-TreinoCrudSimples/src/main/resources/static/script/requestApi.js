@@ -10,7 +10,6 @@ document.getElementById("iname").addEventListener("input", function () {
     //submit
     $("#iname").removeClass("error");
     $(".errorCamp").removeClass("activeError");
-    //ajax save
   }
 });
 
@@ -134,7 +133,7 @@ function deletePerson() {
       }, 3000);
     },
   }).fail(function (xhr, status, errprThrown) {
-    alert("Error save person: " + xhr.responseText);
+    alert("Error delete person: " + xhr.responseText);
   });
 }
 
@@ -158,7 +157,7 @@ function editPerson() {
       $("#iname").val("");
     },
   }).fail(function (xhr, status, errprThrown) {
-    alert("Error save person: " + xhr.responseText);
+    alert("Error edit person: " + xhr.responseText);
   });
 }
 
@@ -225,7 +224,7 @@ function executeSearch(){
 
     },
   }).fail(function (xhr, status, errprThrown) {
-    alert("Error save person: " + xhr.responseText);
+    alert("Error serach person: " + xhr.responseText);
   });
 
 }
